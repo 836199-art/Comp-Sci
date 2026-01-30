@@ -8,6 +8,7 @@ Welcome to my ICS4U portfolio. I’ll use this site to post my work and reflecti
 
 ## About me
 A short intro (interests, goals, tools I’m learning).
+
 My goal is to get good grades and learn more about coding
 I like to play badminton and read books
 
