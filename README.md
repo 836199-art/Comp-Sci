@@ -1,20 +1,23 @@
-# Portfolio-template
-This is a Portfolio Template - to be used by students taking Ms. Kim's ICS3U OR ICS4U.
+Project Introduction / Overview
+This game is called Avoid It! It is a survival game, the player must dodge falling objects while jumping up from
+platform to platform. The player has three lives in the form of hearts, and the game keeps on going until they lose all their lives.
+The player must avoid falling objects and survive as long as they can, and if they do, they gain points. As the game progresses and
+the score increases, the game will become harder as the falling objects move faster.
 
-Welcome! This is your starting point for creating your GitHub Pages portfolio.  
+What the program does
+Lets the player move left and right using keys and jump as well.
+Also lets the player press buttons to look at intstrcutions and stats and also move 
+between different panels of the game.
 
-# How to Edit Your Website
-- Edit `index.md` to customize your homepage.  
-- Add reflections in the `posts/` folder after completing each unit or project.
-- [optional] You may also write additional reflections whenever you like.
-- Put images(e.g.,screenshots of your work) in the `assets/` folder. You can reference images like `![Alt text](./assets/my-image.png)`.
-- Commit your changes, then refresh your GitHub Pages site to see updates.
+How to run the program
+Firstly, the main game panel shows up. The player gets three choices: Play, Stats, Instructions. The player can click 
+instructions button to learn how to play the game or go straight into to game if they wish by choosing play. Once the game starts,
+the player keeps on going until they lose all three hearts. Once the game is over, a game over text pops up along with the score. The player can 
+then click the menu button and it takes you back to the menu. After the player had played multiple games, they are free to check the stats panel on the menu panel
+to check their high score, games played, and lives.
 
-# How to Publish Your Website
-- Go to your repository → **Settings** (top navigation bar) → **Pages**(left panel).
-- Select `main` branch and root(`/`). Click **Save**.
-- Wait a few minutes; your site will be live at the URL shown in the Pages settings.
 
-# Notes
-- Your reflections are written in Markdown. A Markdown cheatsheet is posted on D2L to help with formatting.
-- Your site may take a few minutes to update after each commit. *A commit means saving your changes to GitHub*
+Project Goals and purpose
+The goal of this project is incorporate forms of GUI applications into the code to 
+create a game that works efficiently.
+The purpose of this game is to reach the highest score the player can possibly achieve.
