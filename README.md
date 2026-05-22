@@ -27,55 +27,7 @@ https://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html
 
 
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Random;
-import java.io.*;
 
-// ================= GAME OBJECT =================
-abstract class GameObject {
-    protected int x, y, width, height;
-
-    public GameObject(int x, int y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-    }
-
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
-    }
-
-    public abstract void draw(Graphics g);
-}
-// ================= PLATFORM =================
-class Platform extends GameObject {
-    public Platform(int x, int y) {
-        super(x, y, 120, 15);
-    }
-
-    @Override
-    public void draw(Graphics g) {
-        g.setColor(Color.GREEN);
-        g.fillRect(x, y, width, height);
-    }
-}
-
-// ================= FALLING OBJECT =================
-class FallingObject extends GameObject {
-    
-    private int speed = 4;
-    
-    public FallingObject(int x, int y){
-        super(x, y, 25, 25);
-    }
-   public void move(){
-       y += speed;
-   } 
-   public void reset(){
        y = -50;
        x = new Random().nextInt(760);
    }
