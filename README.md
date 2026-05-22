@@ -21,3 +21,6 @@ Project Goals and purpose:
 The goal of this project is incorporate forms of GUI applications into the code to 
 create a game that works efficiently.
 The purpose of this game is to reach the highest score the player can possibly achieve.
+
+Any additional notes or documentation links (references, etc)
+https://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html 
