@@ -72,7 +72,8 @@ class Player extends GameObject {
     }
     public void moveRight() {
         x += 6; //moves player right
-        if( x + width > 800) x = 800 - width; //prevents leaving the right edge of screen
+        if( x + width > 800) 
+          x = 800 - width; //prevents leaving the right edge of screen
     }
     public void jump() {
        if(!jumping){ //only jump if not already
@@ -86,7 +87,8 @@ class Player extends GameObject {
         velY += 1; //applies gravity
         
     
-        if(velY > 10) velY = 10; //limits falling speed
+        if(velY > 10) 
+        velY = 10; //limits falling speed
         
         if(y >= 520){ //checks if player has reach ground
             y = 520;
@@ -111,10 +113,233 @@ class Player extends GameObject {
     }
         @Override
     public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, width, height);
-        //draws player as a blue square
+        g.setColor(Color.CYAN);
+        g.fillRect(x,y, width, height);
+        
+        g.setColor(Color.WHITE);
+        g.drawRect(x,y, width, height);
+        
+        
     }
+}
+
+// =============== LOGIN PANEL ==============
+class LoginPanel extends JPanel implements ActionListener{
+    
+    FallingEscapeGame frame;
+    
+    JTextField usernameField = new JTextField(15);
+    JPasswordField passwordField = new JPasswordField(15);
+    
+    JButton login = new JButton("LOGIN");
+    JButton register = new JButton("REGISTER");
+    
+    private final String USER_FILE = "users.txt";
+    
+    public LoginPanel(FallingEscapeGame frame){
+        
+        this.frame = frame;
+        
+        setLayout(new GridBagLayout());
+        setBackground(new Color(30,30,50));
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10,10,10,10);
+        
+        JLabel title = new JLabel("LOGIN SYSTEM");
+        title.setFont(new Font("Arial", Font.BOLD, 28));
+        title.setForeground(Color.WHITE);
+        
+        JLabel userLabel = new JLabel("USERNAME: ");
+        userLabel.setForeground(Color.WHITE);
+        
+        JLabel passLabel = new JLabel("PASSWORD: ");
+        passLabel.setForeground(Color.WHITE);
+        
+        styleButton(login);
+        styleButton(register);
+        
+        login.addActionListener(this);
+        register.addActionListener(this);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        add(title, gbc);
+        
+        gbc.gridwidth = 1;
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(userLabel, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        add(usernameField, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(passLabel, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        add(passwordField, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        add(login, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        add(register, gbc);
+        
+        
+    }
+    
+    // ======= HOVER EFFECT ========
+    
+    private void styleButton(JButton b){
+        
+        b.setPreferredSize(new Dimension(120,30));
+        b.setFont(new Font("Arial", Font.BOLD, 12));
+        b.setBackground(new Color(220,220,220));
+        b.setForeground(Color.BLACK);
+        b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        
+        b.addMouseListener(new MouseAdapter(){
+            
+            @Override
+            public void mouseEntered(MouseEvent e){
+                b.setBackground(new Color(255,200,0));
+            }
+            @Override
+            public void mouseExited(MouseEvent e){
+                b.setBackground(new Color(220,220,220));
+            }
+    });
+}
+
+@Override
+public void actionPerformed(ActionEvent e){
+    
+    String username = usernameField.getText();
+    String password = new String(passwordField.getPassword());
+    
+    if(username.isEmpty() || password.isEmpty()){
+        
+        JOptionPane.showMessageDialog(this,
+        "ENTER USERNAME AND PASSWORD");
+        
+        return;
+    }
+    
+    if(e.getSource() == register){
+        if(userExists(username)){
+            JOptionPane.showMessageDialog(this,
+            "USER ALREADY EXISTS");
+        } else {
+            
+            saveUser(username,password);
+            JOptionPane.showMessageDialog(this,
+            "REGISTERED SUCCESSFULLY");
+        }
+    }
+    
+    if(e.getSource() == login){
+        
+        if(checkLogin(username, password)){
+            
+            JOptionPane.showMessageDialog(this,
+            "LOGIN SUCCESSFUL");
+            
+            frame.showMenu();
+        } else {
+            
+            JOptionPane.showMessageDialog(this,
+            "INVALID LOGIN");
+        }
+    }
+}
+
+private void saveUser(String username, String password){
+    
+    try{
+        
+        FileWriter writer =
+               new FileWriter(USER_FILE, true);
+               
+               writer.write(username + "," + password + "\n");
+               writer.flush();
+               writer.close();
+               
+    } catch (IOException e){
+        e.printStackTrace();
+    }
+}
+
+private boolean userExists(String username){
+    
+    try{
+        File file = new File(USER_FILE);
+        
+        if(!file.exists())
+        return false;
+        
+        BufferedReader reader =
+                 new BufferedReader(new FileReader(file));
+                 
+        String line;
+        
+        while((line = reader.readLine()) != null){
+            String [] data = line.split(",");
+            
+            if(data[0].equals(username)){
+                reader.close();
+                return true;
+            }
+        }
+        reader.close();
+                 
+    } catch (IOException e){
+        
+        e.printStackTrace();
+    }
+    return false;
+}
+
+private boolean checkLogin(String username, String password){
+    
+    try{
+        
+        File file = new File(USER_FILE);
+        
+        if(!file.exists())
+        return false;
+        
+        BufferedReader reader =
+                new BufferedReader(new FileReader(file));
+                
+        String line;
+        while((line = reader.readLine()) != null){
+            
+            String[]data = line.split(",");
+            
+            if(data[0].equals(username)
+                  && data[1].equals(password)){
+                      
+                      reader.close();
+                      return true;
+        }
+    }
+    reader.close();
+    
+      } catch (IOException e){
+    
+    e.printStackTrace();
+     }
+    return false;
+  }
 }
 // ================= MENU =================
 class MenuPanel extends JPanel implements ActionListener {
@@ -163,8 +388,23 @@ class MenuPanel extends JPanel implements ActionListener {
     private void style(JButton b) {
         b.setPreferredSize(new Dimension(120, 25));
         b.setFont(new Font("Arial", Font.BOLD, 12));
-        b.setBackground(Color.LIGHT_GRAY);
+        b.setBackground(new Color(220,220,220));
+        b.setForeground(Color.BLACK);
         b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        
+        b.addMouseListener(new MouseAdapter(){
+            
+            @Override
+            public void mouseEntered(MouseEvent e){
+                b.setBackground(new Color(225,200,0));
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e){
+                b.setBackground(new Color(220,220,220));
+            }
+        });
     }
 
     public void actionPerformed(ActionEvent e) { //handles clicks
@@ -179,6 +419,7 @@ class GamePanel extends JPanel implements ActionListener {
     //main gameplat screen with timer loop
     
     Player player;
+    
     ArrayList<Platform> platforms = new ArrayList<>();
     ArrayList<FallingObject> objects = new ArrayList<>();
     //game entities
@@ -198,10 +439,10 @@ class GamePanel extends JPanel implements ActionListener {
         this.frame = frame;
         setBackground(Color.BLACK);
         
-        player = new Player(300,520);
+        player = new Player(300,450);
     
         for(int i = 0; i < 10; i++)
-        platforms.add(new Platform(r.nextInt(650), 100 + i *60));
+        platforms.add(new Platform(r.nextInt(650), 50 + i *50));
         //creates 10 platforms spaced vertically
         
         for(int i = 0; i < 5 ; i ++)
@@ -271,8 +512,10 @@ class GamePanel extends JPanel implements ActionListener {
             
          player.update();//applies gravity and movement
         
-        if(left) player.moveLeft();
-        if(right) player.moveRight();
+        if(left) 
+           player.moveLeft();
+        if(right) 
+           player.moveRight();
         //handles movement
         
         Rectangle feet = new Rectangle(player.x, player.y + player.height, player.width, 5);
@@ -349,7 +592,7 @@ public class FallingEscapeGame extends JFrame{
     int highScore = 0;
     //starts tracking
     
-    private final String FILE_NAME = "stats.txt"; //file storage
+    private final String FILE_NAME ="stats.txt"; //file storage
     
     public FallingEscapeGame(){
         
@@ -359,7 +602,7 @@ public class FallingEscapeGame extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        setContentPane(new MenuPanel(this));
+        setContentPane(new LoginPanel(this));
         setVisible(true);
     }
     public void showMenu(){
@@ -372,7 +615,8 @@ public class FallingEscapeGame extends JFrame{
     }
     public void updateStats(int score){ //updates high score and game countm 
         gamesPlayed++;
-        if(score > highScore) highScore = score;
+        if(score > highScore) 
+        highScore = score;
     }
 
 // ========= FILE SAVE ================
@@ -383,6 +627,7 @@ public void saveStatsToFile(){
         FileWriter writer = new FileWriter(FILE_NAME, false);
         writer.write(gamesPlayed + "\n");
         writer.write(highScore + "\n");
+        writer.flush();
         writer.close();
         
     }catch (IOException e){
@@ -397,7 +642,8 @@ private void loadStatsFromFile(){
     try{
         File file = new File(FILE_NAME);
         
-        if(!file.exists()) return;
+        if(!file.exists()) 
+           return;
         
         BufferedReader reader = 
                 new BufferedReader(new FileReader(file));
